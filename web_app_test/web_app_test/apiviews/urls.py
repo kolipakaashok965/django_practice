@@ -20,7 +20,7 @@ from .info import InfoView
 from .second import SecondAPIView
 
 urlpatterns = [
-    path("", InfoView.as_view()),
-    path("info/", InfoView.as_view()),
+    path("", InfoView.as_view(), name='info'),
+    path("info/", InfoView.as_view(), name='info'),
     path("second/", SecondAPIView.as_view()),
 ]
