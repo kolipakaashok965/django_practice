@@ -20,7 +20,7 @@ pipeline {
         
         stage('Setup Python') {
             steps {
-                sh '''
+                bat '''
                     python -m pip install --upgrade pip
                     pip install -r requirements.txt
                 '''
@@ -29,7 +29,7 @@ pipeline {
         
         stage('Run Tests') {
             steps {
-                sh '''
+                bat '''
                     cd web_app_test
                     python manage.py test
                 '''
@@ -38,17 +38,17 @@ pipeline {
         
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ${DOCKER_IMAGE} .'
+                bat 'docker build -t %DOCKER_IMAGE% .'
             }
         }
         
         stage('Run Docker Container') {
             steps {
-                sh '''
-                    docker stop ${CONTAINER_NAME} || true
-                    docker rm ${CONTAINER_NAME} || true
-                    docker run -d -p 8000:8000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}
-                    sleep 10
+                bat '''
+                    docker stop %CONTAINER_NAME% || exit 0
+                    docker rm %CONTAINER_NAME% || exit 0
+                    docker run -d -p 8000:8000 --name %CONTAINER_NAME% %DOCKER_IMAGE%
+                    timeout /t 10
                     curl http://localhost:8000/apiviews/info/
                 '''
             }
@@ -57,8 +57,8 @@ pipeline {
     
     post {
         always {
-            sh 'docker stop ${CONTAINER_NAME} || true'
-            sh 'docker rm ${CONTAINER_NAME} || true'
+            bat 'docker stop %CONTAINER_NAME% || exit 0'
+            bat 'docker rm %CONTAINER_NAME% || exit 0'
             cleanWs()
         }
     }
