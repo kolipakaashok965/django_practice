@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: django-practice
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd web_app_test && python manage.py migrate && gunicorn web_app_test.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4 
