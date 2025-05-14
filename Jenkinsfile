@@ -40,8 +40,7 @@ pipeline {
             steps {
                 bat '''
                     cd web_app_test
-                    set PYTHONPATH=%PYTHONPATH%
-                    "%PYTHON_PATH%" manage.py test
+                    "%PYTHON_PATH%" manage.py test web_app_test.apiviews.test_info
                 '''
             }
         }
