@@ -9,6 +9,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'django-practice'
         CONTAINER_NAME = 'django-app'
+        PYTHON_PATH = 'C:\\Users\\ashok\\IdeaProjects\\django_practice\\django_env\\Scripts\\python.exe'
+        PIP_PATH = 'C:\\Users\\ashok\\IdeaProjects\\django_practice\\django_env\\Scripts\\pip.exe'
     }
     
     stages {
@@ -18,11 +20,17 @@ pipeline {
             }
         }
         
+        stage('Check Docker') {
+            steps {
+                bat 'docker --version'
+            }
+        }
+        
         stage('Setup Python') {
             steps {
                 bat '''
-                    python -m pip install --upgrade pip
-                    pip install -r requirements.txt
+                    "%PYTHON_PATH%" -m pip install --upgrade pip
+                    "%PIP_PATH%" install -r requirements.txt
                 '''
             }
         }
@@ -31,7 +39,7 @@ pipeline {
             steps {
                 bat '''
                     cd web_app_test
-                    python manage.py test
+                    "%PYTHON_PATH%" manage.py test
                 '''
             }
         }
