@@ -11,6 +11,7 @@ pipeline {
         CONTAINER_NAME = 'django-app'
         PYTHON_PATH = 'C:\\Users\\ashok\\IdeaProjects\\django_practice\\django_env\\Scripts\\python.exe'
         PIP_PATH = 'C:\\Users\\ashok\\IdeaProjects\\django_practice\\django_env\\Scripts\\pip.exe'
+        PYTHONPATH = 'C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\django_pipeline'
     }
     
     stages {
@@ -39,6 +40,7 @@ pipeline {
             steps {
                 bat '''
                     cd web_app_test
+                    set PYTHONPATH=%PYTHONPATH%
                     "%PYTHON_PATH%" manage.py test
                 '''
             }
